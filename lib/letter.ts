@@ -1,5 +1,5 @@
-// Everything in the letter is computed here in code. The AI only turns these
-// facts into friendly sentences, and is told not to invent any numbers.
+// Everything in the letter is computed here in code. The writing step only turns
+// these facts into friendly sentences and never invents numbers.
 import { config, SUBSCRIPTION_PATTERN } from "./config";
 import { addDays, fmtDay, monthName } from "./dates";
 import { healthScores, monthlyNumbers } from "./health";
@@ -99,7 +99,7 @@ export function letterFacts(snap: Snapshot, f: Forecast): LetterFacts {
   };
 }
 
-/** Used when no AI key is set (or the AI call fails), so the feature always works. */
+/** The built-in letter template, so the feature always works. */
 export function templateLetter(x: LetterFacts): string {
   return [
     `Hey ${x.name},`,

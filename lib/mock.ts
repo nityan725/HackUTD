@@ -1,6 +1,6 @@
 import type { Snapshot } from "./types";
 
-// An exact copy of "Priya Sharma" as seeded in your Nessie account (Nov 7, 2026).
+// An exact copy of Carrie's demo data as seeded in your Nessie account (Nov 7, 2026).
 // Kit uses this automatically if Nessie can't be reached, so the demo never breaks.
 const CHK = "e2a36f0b-eadc-4f09-935c-4a8d5e4867ba";
 const SAV = "95583174-618a-43e3-950c-6e0bd42e0c73";

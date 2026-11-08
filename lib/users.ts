@@ -16,7 +16,7 @@ export interface DemoUser {
 
 export const USERS: DemoUser[] = [
   {
-    id: "priya",
+    id: "carrie",
     email: "carrie@kit.app",
     password: "demo123",
     name: "Carrie",
@@ -42,7 +42,7 @@ export const USERS: DemoUser[] = [
 ];
 
 // Money between friends. Settled with Nessie peer-to-peer transfers (see /api/p2p).
-export const IOUS = [{ id: "iou1", from: "marcus", to: "priya", amount: 60, note: "Concert tickets" }];
+export const IOUS = [{ id: "iou1", from: "marcus", to: "carrie", amount: 60, note: "Concert tickets" }];
 
 export const findUser = (id: string | undefined) => USERS.find((u) => u.id === id);
 

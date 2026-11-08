@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { AI_PROMPT, describe, parseLocally, sanitize } from "@/lib/whatif";
 
 // Body: { question, bills: string[] } → { actions, understood, source }
-// AI (if a key is set) only turns the question into structured actions.
-// If there's no key or the AI fails, the built-in parser is used instead.
+// Turns the question into structured actions.
+// Uses the built-in parser unless an optional language service is configured.
 export async function POST(req: Request) {
   const { question, bills } = await req.json().catch(() => ({}));
   const q = String(question || "").slice(0, 300);

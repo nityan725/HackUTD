@@ -1,5 +1,5 @@
 // "What if…" chat: turn a question into structured actions, then into forecast Changes.
-// The AI (or the built-in parser below) only UNDERSTANDS the question.
+// The parser below only UNDERSTANDS the question.
 // All numbers in the answer come from the forecast engine.
 import { config } from "./config";
 import { addDays, isDueOn } from "./dates";
@@ -34,7 +34,7 @@ function when(text: string): number {
   return 0;
 }
 
-/** Built-in parser — works with no AI key. Handles the common phrasings. */
+/** Built-in parser. Handles the common phrasings. */
 export function parseLocally(question: string, billNames: string[]): Parsed {
   const actions: Action[] = [];
   const understood: string[] = [];
@@ -138,7 +138,7 @@ export function parseLocally(question: string, billNames: string[]): Parsed {
   return { actions, understood };
 }
 
-/** Make sure AI output is safe and well-formed before we use it. */
+/** Make sure parsed output is safe and well-formed before we use it. */
 export function sanitize(raw: unknown): Action[] {
   if (!Array.isArray(raw)) return [];
   const out: Action[] = [];

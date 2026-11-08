@@ -55,7 +55,6 @@ Nessie API ──► /api/snapshot ──► Forecast engine ──► Home · F
 ## Tech stack
 
 Next.js (App Router) · React · TypeScript · Tailwind CSS · Recharts · Capital One Nessie API · Vercel · PWA
-Optional AI: Gemini, OpenAI or Claude
 
 ## Run it locally
 
@@ -77,7 +76,6 @@ Fill in `.env.local`:
 | `NEXT_PUBLIC_DEMO_TODAY` | Pins "today" to the date the demo data was created (`2026-11-07`) |
 | `NEXT_PUBLIC_BALANCE_AS_OF` | Date Nessie's stored balances are treated as accurate (`2026-11-07`) |
 | `SESSION_SECRET` | Any long random phrase (signs the login cookie) |
-| `GEMINI_API_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` | Optional, one AI key |
 
 ```bash
 npm run dev

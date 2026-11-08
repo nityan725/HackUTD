@@ -1,5 +1,5 @@
 // THE ENGINE. Every feature (home, fixes, buy check, stress test, letter)
-// calls forecast() with different Changes. The math is plain code, not AI.
+// calls forecast() with different Changes. All the math is plain code.
 import { config } from "./config";
 import { addDays, diffDays, isDueOn, today as getToday } from "./dates";
 import { card, checking } from "./snapshot";
