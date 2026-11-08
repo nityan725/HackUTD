@@ -4,7 +4,7 @@
 
 <h1 align="center">Kit</h1>
 <p align="center"><b>Hears money trouble coming, and helps you fix it in one tap.</b><br/>
-Built on the Capital One Nessie API · HackUTD 2026 · PNC + Capital One tracks</p>
+Built on the Capital One Nessie API · HackUTD 2026 · </p>
 
 ---
 
