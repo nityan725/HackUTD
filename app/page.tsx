@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import HealthGrid from "@/components/HealthGrid";
-import { IconBadge } from "@/components/Icon";
+import { Icon, IconBadge } from "@/components/Icon";
 import SignOutButton from "@/components/SignOutButton";
 import TimelineChart from "@/components/TimelineChart";
 import { Card, DataNote, ErrorBox, Loading, Pill } from "@/components/ui";
@@ -9,6 +9,8 @@ import { config } from "@/lib/config";
 import { diffDays, fmtDay } from "@/lib/dates";
 import { crunchCauses } from "@/lib/forecast";
 import { hours, money } from "@/lib/format";
+import { netWorth } from "@/lib/networth";
+import { nextMoves } from "@/lib/nextmove";
 import { useRunway } from "@/lib/store";
 
 export default function Home() {
@@ -49,7 +51,7 @@ export default function Home() {
 
         <div className="mt-4 grid grid-cols-2 gap-3 border-t border-line pt-4">
           <div>
-            <p className="text-xs text-muted">Runway</p>
+            <p className="text-xs text-muted">Money lasts</p>
             <p className="tabular text-lg font-bold">
               {base.runwayDays > config.horizonDays ? `${config.horizonDays}+ days` : `${base.runwayDays} days`}
             </p>
@@ -90,13 +92,31 @@ export default function Home() {
         </Link>
       )}
 
+      {/* Your next moves */}
+      <h2 className="mb-3 mt-6 text-lg font-bold">{base.status === "green" ? "Your next moves" : "After that"}</h2>
+      <Card flush className="divide-y divide-line">
+        {nextMoves(snap, base).map((m, i) => (
+          <Link key={m.id} href={m.href} className="flex items-center gap-3 px-4 py-3.5">
+            <span className="relative">
+              <IconBadge name={m.icon} tone={m.tone} />
+              <span className="absolute -left-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-ink text-[9px] font-bold text-white">{i + 1}</span>
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-semibold leading-snug">{m.title}</span>
+              <span className="block text-xs text-muted">{m.why}</span>
+            </span>
+            <span className="shrink-0 rounded-full bg-accent-soft px-2.5 py-1 text-xs font-semibold text-accent">{m.cta}</span>
+          </Link>
+        ))}
+      </Card>
+
       {/* Mini forecast */}
       <Card className="mt-4">
         <div className="mb-1 flex items-baseline justify-between">
           <p className="font-semibold">Checking, next 30 days</p>
           <p className="text-xs text-muted">lowest {money(base.lowest.balance)}</p>
         </div>
-        <TimelineChart series={[{ name: "Balance", forecast: base, color: "#2742d6", fill: true }]} height={160} />
+        <TimelineChart series={[{ name: "Balance", forecast: base, color: "#1E8C80", fill: true }]} height={160} />
       </Card>
 
       {/* Health scores */}
@@ -104,7 +124,25 @@ export default function Home() {
       <HealthGrid scores={scores} />
 
       {/* All accounts */}
-      <h2 className="mb-3 mt-6 text-lg font-bold">Everything Runway sees</h2>
+      <h2 className="mb-3 mt-6 text-lg font-bold">Everything Kit sees</h2>
+      <div className="mb-3 grid grid-cols-2 gap-3">
+        <Link href="/worth" className="rounded-2xl bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,.06)]">
+          <IconBadge name="target" tone="teal" size="sm" />
+          <p className="mt-2 text-xs text-muted">Net worth</p>
+          <p className={`tabular text-xl font-bold ${netWorth(snap).netWorth < 0 ? "text-bad" : ""}`}>{money(netWorth(snap).netWorth)}</p>
+          <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-accent">
+            All {netWorth(snap).count} accounts <Icon name="chevron" className="h-3 w-3" />
+          </p>
+        </Link>
+        <Link href="/pay" className="rounded-2xl bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,.06)]">
+          <IconBadge name="users" tone="blue" size="sm" />
+          <p className="mt-2 text-xs text-muted">Pay & request</p>
+          <p className="text-xl font-bold">Friends</p>
+          <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-accent">
+            Settle up <Icon name="chevron" className="h-3 w-3" />
+          </p>
+        </Link>
+      </div>
       <Card flush className="divide-y divide-line">
         {snap.accounts.map((a) => (
           <div key={a.id} className="flex items-center gap-3 px-5 py-3.5">

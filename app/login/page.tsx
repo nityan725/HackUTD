@@ -4,8 +4,8 @@ import { useRunway } from "@/lib/store";
 
 // Shown on the sign-in screen so judges can try it instantly
 const DEMO_ACCOUNTS = [
-  { name: "Carrie", email: "carrie@runway.app", blurb: "Part-time job · rent due before payday" },
-  { name: "Marcus", email: "marcus@runway.app", blurb: "Full-time · healthy savings" },
+  { name: "Carrie", email: "carrie@kit.app", blurb: "Part-time job · rent due before payday" },
+  { name: "Marcus", email: "marcus@kit.app", blurb: "Full-time · healthy savings" },
 ];
 const DEMO_PASSWORD = "demo123";
 
@@ -38,8 +38,8 @@ export default function LoginPage() {
       {/* Brand */}
       <div className="-mx-5 -mt-5 rounded-b-[36px] bg-accent px-6 pb-10 pt-14 text-white">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/icon-192.png" alt="Runway logo" className="h-14 w-14 rounded-2xl ring-2 ring-white/20" />
-        <h1 className="mt-5 text-[34px] font-extrabold leading-tight tracking-tight">Runway</h1>
+        <img src="/icon-192.png" alt="Kit logo" className="h-14 w-14 rounded-2xl ring-2 ring-white/20" />
+        <h1 className="mt-5 text-[34px] font-extrabold leading-tight tracking-tight">Kit</h1>
         <p className="mt-1 text-[15px] text-white/80">See the crunch before it hits. Fix it in one tap.</p>
       </div>
 

@@ -1,5 +1,6 @@
 import { config, SUBSCRIPTION_PATTERN } from "./config";
 import { forecast, mergeChanges } from "./forecast";
+import { iouStatus } from "./p2p";
 import { card, checking, savings } from "./snapshot";
 import type { Changes, Forecast, Snapshot } from "./types";
 
@@ -10,7 +11,10 @@ export interface Fix {
   cost: number;
   costLabel: string;
   changes: Changes; // what this fix does to the forecast
-  action?: { type: "move"; amount: number; fromId: string; toId: string }; // written to Nessie
+  // written to Nessie when approved
+  action?:
+    | { type: "move"; amount: number; fromId: string; toId: string }
+    | { type: "request"; amount: number; friendId: string; friendName: string };
   forecast: Forecast;
   resolves: boolean;
 }
@@ -43,6 +47,24 @@ export function buildFixes(snap: Snapshot, base: Forecast, plan: Changes = {}): 
         resolves: f.lowest.balance >= 0,
       });
     }
+  }
+
+  // 1b. Ask a friend who owes you to pay you back (Nessie peer-to-peer)
+  for (const iou of iouStatus(snap)) {
+    if (iou.direction !== "owesYou" || iou.outstanding <= 0) continue;
+    const changes = { startDelta: iou.outstanding };
+    const f = run(changes);
+    fixes.push({
+      id: `request-${iou.id}`,
+      title: `Ask ${iou.friendName} to pay back ${usd(iou.outstanding)}`,
+      detail: `For ${iou.note.toLowerCase()}. Sent peer-to-peer through Capital One Nessie.`,
+      cost: 0,
+      costLabel: "$0",
+      changes,
+      action: { type: "request", amount: iou.outstanding, friendId: iou.friendId, friendName: iou.friendName },
+      forecast: f,
+      resolves: f.lowest.balance >= 0,
+    });
   }
 
   // 2. Pay only the card minimum this month (if the card payment lands before the low point)

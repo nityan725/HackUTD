@@ -12,7 +12,7 @@ export const config = {
   horizonDays: 45, // how far ahead we forecast (covers next month's bills too)
   // Nessie balances don't update by themselves. We treat each account's
   // stored balance as true at the end of this date, and add/subtract any
-  // transactions dated after it, plus any money moves Runway made.
+  // transactions dated after it, plus any money moves Kit made.
   balanceAsOf: process.env.NEXT_PUBLIC_BALANCE_AS_OF || "2026-11-07",
 };
 

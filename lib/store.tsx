@@ -21,6 +21,7 @@ interface RunwayState {
   fixes: Fix[];
   approved: string[];
   approve: (fix: Fix) => Promise<void>;
+  p2p: (friendId: string, amount: number, kind: "request" | "send", note?: string) => Promise<void>;
   refresh: () => Promise<void>;
   reset: () => void;
   signIn: (email: string, password: string) => Promise<string | null>; // returns an error message or null
@@ -29,7 +30,7 @@ interface RunwayState {
 
 const Ctx = createContext<RunwayState | null>(null);
 
-// "Reset demo" hides earlier Runway money moves (Nessie won't let us delete them),
+// "Reset demo" hides earlier Kit money moves (Nessie won't let us delete them),
 // so you can run the demo again from the red crunch.
 const IGNORE_KEY = "runway-ignored-tx";
 function loadIgnored(): string[] {
@@ -104,12 +105,19 @@ export function RunwayProvider({ children }: { children: React.ReactNode }) {
     async (fix: Fix) => {
       if (!snap || !computed.base) return;
       setBefore(computed.base);
-      if (fix.action?.type === "move") {
-        const r = await fetch("/api/move", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(fix.action),
-        });
+      if (fix.action) {
+        const r =
+          fix.action.type === "move"
+            ? await fetch("/api/move", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(fix.action),
+              })
+            : await fetch("/api/p2p", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ friendId: fix.action.friendId, amount: fix.action.amount, kind: "request" }),
+              });
         const j = await r.json();
         if (!r.ok) throw new Error(j.error || "Move failed");
         // Add the new Nessie transactions locally so the chart redraws instantly
@@ -121,6 +129,18 @@ export function RunwayProvider({ children }: { children: React.ReactNode }) {
     },
     [snap, computed.base],
   );
+
+  // Pay or request money from a friend (Nessie peer-to-peer)
+  const p2p = useCallback(async (friendId: string, amount: number, kind: "request" | "send", note?: string) => {
+    const r = await fetch("/api/p2p", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ friendId, amount, kind, note }),
+    });
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || "Transfer failed");
+    setSnap((prev) => (prev ? { ...prev, txs: [...prev.txs, ...j.txs] } : prev));
+  }, []);
 
   const reset = useCallback(() => {
     if (snap) {
@@ -167,6 +187,7 @@ export function RunwayProvider({ children }: { children: React.ReactNode }) {
     fixes: computed.fixes,
     approved,
     approve,
+    p2p,
     refresh,
     reset,
     signIn,

@@ -41,7 +41,7 @@ export default function LetterPage() {
           <div className="flex justify-center">
             <IconBadge name="mail" tone="green" size="lg" />
           </div>
-          <p className="mt-3 text-sm text-muted">Runway has already crunched your numbers. Want them as a letter?</p>
+          <p className="mt-3 text-sm text-muted">Kit has already crunched your numbers. Want them as a letter?</p>
           <button
             onClick={write}
             disabled={busy}
@@ -60,7 +60,7 @@ export default function LetterPage() {
           <p className="mt-3 flex gap-2 rounded-2xl bg-white px-4 py-3 text-xs text-muted">
             <Icon name="lock" className="h-4 w-4 shrink-0 text-accent" />
             <span>
-            Every number above was calculated by Runway&apos;s code from your Nessie data.
+            Every number above was calculated by Kit&apos;s code from your Nessie data.
             {source === "ai" ? " AI only wrote the words." : " (Written from a template — add an AI key to personalize the wording.)"}
             </span>
           </p>

@@ -84,7 +84,7 @@ export async function fetchSnapshot(CUSTOMER: string): Promise<Snapshot> {
     };
   } catch (e) {
     console.error(e);
-    return { ...mockSnapshot(), note: "Couldn't reach Nessie, so Runway is showing demo data." };
+    return { ...mockSnapshot(), note: "Couldn't reach Nessie, so Kit is showing demo data." };
   }
 }
 
@@ -125,4 +125,46 @@ export async function moveMoney(fromId: string, toId: string, amount: number, da
       { id: d._id, accountId: toId, kind: "deposit", date, amount, description },
     ] as Tx[],
   };
+}
+
+/** Find a customer's checking account id in Nessie. */
+async function checkingId(customerId: string): Promise<string> {
+  const accts = list(await get(`/customers/${customerId}/accounts`));
+  const chk = accts.find((a: any) => a.type === "Checking") ?? accts[0];
+  if (!chk) throw new Error("No checking account found");
+  return chk._id;
+}
+
+/** Peer-to-peer: money from one Kit user to another, between their Nessie checking accounts.
+ *  (Nessie transfers don't record a destination, so it's a withdrawal + a matching deposit.)
+ *  Returns only the transaction on the signed-in user's side. */
+export async function p2pTransfer(opts: {
+  payer: { customerId: string; name: string };
+  payee: { customerId: string; name: string };
+  me: "payer" | "payee";
+  amount: number;
+  date: string;
+  note: string;
+}) {
+  const { payer, payee, me, amount, date, note } = opts;
+  const description = `Runway P2P: ${payer.name} → ${payee.name} · ${note}`;
+  if (mockMode()) {
+    const myChecking = mockSnapshot().accounts.find((a) => a.type === "Checking")!.id;
+    return {
+      mock: true,
+      txs: [{ id: `p2p${Date.now()}`, accountId: myChecking, kind: me === "payer" ? "withdrawal" : "deposit", date, amount, description }] as Tx[],
+    };
+  }
+  const [fromAcct, toAcct] = await Promise.all([checkingId(payer.customerId), checkingId(payee.customerId)]);
+  const w = await post(`/accounts/${fromAcct}/withdrawals`, {
+    medium: "balance", amount, transaction_date: date, status: "completed", description,
+  });
+  const d = await post(`/accounts/${toAcct}/deposits`, {
+    medium: "balance", amount, transaction_date: date, status: "completed", description,
+  });
+  const mine: Tx =
+    me === "payer"
+      ? { id: w._id, accountId: fromAcct, kind: "withdrawal", date, amount, description }
+      : { id: d._id, accountId: toAcct, kind: "deposit", date, amount, description };
+  return { mock: false, txs: [mine] };
 }

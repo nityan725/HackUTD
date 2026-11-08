@@ -45,8 +45,8 @@ export default function TimelineChart({ series, height = 190, days = 30 }: { ser
         <ComposedChart data={data} margin={{ top: 8, right: 18, bottom: 0, left: 0 }}>
           <defs>
             <linearGradient id="fillGood" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#2742d6" stopOpacity={0.18} />
-              <stop offset="100%" stopColor="#2742d6" stopOpacity={0} />
+              <stop offset="0%" stopColor="#1E8C80" stopOpacity={0.18} />
+              <stop offset="100%" stopColor="#1E8C80" stopOpacity={0} />
             </linearGradient>
           </defs>
           {yMin < 0 && <ReferenceArea y1={yMin} y2={0} fill="#e0393e" fillOpacity={0.08} ifOverflow="hidden" />}

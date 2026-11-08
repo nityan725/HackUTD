@@ -4,14 +4,14 @@ import { RunwayProvider } from "@/lib/store";
 import BottomNav from "@/components/BottomNav";
 
 export const metadata: Metadata = {
-  title: "Runway",
+  title: "Kit",
   description: "See a cash crunch before it happens, and fix it in one tap.",
-  appleWebApp: { capable: true, title: "Runway", statusBarStyle: "default" },
+  appleWebApp: { capable: true, title: "Kit", statusBarStyle: "default" },
   icons: { icon: "/icon-192.png", apple: "/apple-touch-icon.png" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f4f5f7",
+  themeColor: "#f3f8f7",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

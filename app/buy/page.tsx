@@ -56,7 +56,7 @@ export default function BuyPage() {
           />
         </div>
         <label className="mt-3 flex items-center gap-2 text-sm text-muted">
-          <input type="checkbox" checked={monthly} onChange={(e) => setMonthly(e.target.checked)} className="h-4 w-4 accent-[#2742d6]" />
+          <input type="checkbox" checked={monthly} onChange={(e) => setMonthly(e.target.checked)} className="h-4 w-4 accent-[#1E8C80]" />
           This repeats every month
         </label>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -143,11 +143,11 @@ export default function BuyPage() {
             <TimelineChart
               series={[
                 { name: "Without it", forecast: base, color: "#94a3b8", dashed: true },
-                { name: "With it", forecast: result.withPurchase, color: "#2742d6" },
+                { name: "With it", forecast: result.withPurchase, color: "#1E8C80" },
               ]}
               height={160}
             />
-            <Legend items={[{ label: "Without it", color: "#94a3b8", dashed: true }, { label: "With it", color: "#2742d6" }]} />
+            <Legend items={[{ label: "Without it", color: "#94a3b8", dashed: true }, { label: "With it", color: "#1E8C80" }]} />
           </Card>
         </div>
       )}

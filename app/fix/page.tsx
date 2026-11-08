@@ -14,6 +14,7 @@ const FIX_ICONS: Record<string, { icon: string; tone: Tone }> = {
   cardmin: { icon: "card", tone: "purple" },
   pause: { icon: "pause", tone: "amber" },
   nothing: { icon: "x", tone: "red" },
+  request: { icon: "users", tone: "blue" },
 };
 
 export default function FixPage() {
@@ -34,9 +35,11 @@ export default function FixPage() {
     try {
       await approve(f);
       setMsg(
-        f.action
+        f.action?.type === "move"
           ? `Done. ${money(f.action.amount)} moved from savings to checking in Nessie.`
-          : `Done. "${f.title}" is now part of your plan.`,
+          : f.action?.type === "request"
+            ? `Done. ${f.action.friendName} paid you back ${money(f.action.amount)} through Nessie.`
+            : `Done. "${f.title}" is now part of your plan.`,
       );
     } catch (e) {
       setMsg(`That didn't work: ${String(e)}`);
@@ -127,7 +130,7 @@ export default function FixPage() {
               className={`w-full rounded-2xl border-2 bg-white p-4 text-left transition ${on ? "border-accent" : "border-transparent"}`}
             >
               <div className="flex items-start justify-between gap-3">
-                <IconBadge name={FIX_ICONS[f.id]?.icon ?? "bolt"} tone={FIX_ICONS[f.id]?.tone ?? "green"} />
+                <IconBadge name={FIX_ICONS[f.id.split("-")[0]]?.icon ?? "bolt"} tone={FIX_ICONS[f.id.split("-")[0]]?.tone ?? "green"} />
                 <div className="flex-1">
                   <p className="font-semibold">{f.title}</p>
                   <p className="mt-0.5 text-sm text-muted">{f.detail}</p>
@@ -155,9 +158,15 @@ export default function FixPage() {
             onClick={() => onApprove(fix)}
             className="w-full rounded-2xl bg-accent py-4 text-base font-bold text-white shadow-lg shadow-accent/30 transition active:scale-[.98] disabled:opacity-60"
           >
-            {busy ? "Working…" : fix.action ? `Approve: move ${money(fix.action.amount)}` : "Approve this fix"}
+            {busy
+              ? "Working…"
+              : fix.action?.type === "move"
+                ? `Approve: move ${money(fix.action.amount)}`
+                : fix.action?.type === "request"
+                  ? `Request ${money(fix.action.amount)} from ${fix.action.friendName}`
+                  : "Approve this fix"}
           </button>
-          <p className="mt-2 text-center text-xs text-muted">Nothing happens until you tap. Runway never moves money on its own.</p>
+          <p className="mt-2 text-center text-xs text-muted">Nothing happens until you tap. Kit never moves money on its own.</p>
         </div>
       )}
     </div>

@@ -41,14 +41,14 @@ export default function ProfilePage() {
       <div className="flex flex-col items-center rounded-3xl bg-white p-6 text-center shadow-[0_1px_2px_rgba(15,23,42,.06)]">
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent text-3xl font-bold text-white">{name[0]}</div>
         <p className="mt-3 text-xl font-bold">{name}</p>
-        <p className="text-sm text-muted">{name.toLowerCase()}@runway.app</p>
+        <p className="text-sm text-muted">{name.toLowerCase()}@kit.app</p>
         <button onClick={() => showToast("Editing your profile is coming soon.")} className="mt-3 rounded-full bg-accent-soft px-4 py-1.5 text-xs font-semibold text-accent">
           Edit profile
         </button>
       </div>
 
-      {/* How Runway calculates */}
-      <Section title="How Runway calculates" note="These make every number in the app yours.">
+      {/* How Kit calculates */}
+      <Section title="How Kit calculates" note="These make every number in the app yours.">
         <Row icon="clock" tone="purple" label="Hourly wage" value={`$${config.hourlyWage}/hr`} onClick={() => showToast("You'll be able to edit this soon.")} />
         <Row
           icon="calendar"
@@ -103,7 +103,7 @@ export default function ProfilePage() {
       <button onClick={signOut} className="mt-6 w-full rounded-2xl bg-white py-3.5 font-bold text-bad shadow-[0_1px_2px_rgba(15,23,42,.06)]">
         Sign out
       </button>
-      <p className="mt-3 text-center text-xs text-muted">Runway · demo version</p>
+      <p className="mt-3 text-center text-xs text-muted">Kit · demo version</p>
 
       {toast && (
         <div className="rise fixed inset-x-0 bottom-28 z-40 mx-auto w-[min(380px,90%)] rounded-2xl bg-ink px-4 py-3 text-center text-sm text-white shadow-xl">

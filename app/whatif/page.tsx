@@ -1,5 +1,5 @@
 "use client";
-// "What if…" chat. You type a question; Runway figures out what you mean,
+// "What if…" chat. You type a question; Kit figures out what you mean,
 // runs it through the forecast engine, and answers with real numbers.
 import { useEffect, useRef, useState } from "react";
 import { Icon, IconBadge } from "@/components/Icon";
@@ -97,7 +97,7 @@ export default function WhatIfPage() {
 
   return (
     <div className="rise pb-24">
-      <PageTitle kicker="Stress test" title="What if…?" sub="Ask about any change. Runway runs it through your real numbers." />
+      <PageTitle kicker="Stress test" title="What if…?" sub="Ask about any change. Kit runs it through your real numbers." />
 
       {/* Intro + suggestions */}
       <div className="flex gap-2.5">
@@ -197,7 +197,7 @@ function AnswerCard({ a }: { a: Answer }) {
 
   return (
     <div className="rounded-2xl rounded-tl-md bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,.06)]">
-      {/* How Runway read the question */}
+      {/* How Kit read the question */}
       <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">I read that as</p>
       <div className="mt-1.5 flex flex-wrap gap-1.5">
         {a.understood.map((u) => (
@@ -214,7 +214,7 @@ function AnswerCard({ a }: { a: Answer }) {
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-canvas p-2.5">
-          <p className="text-[11px] text-muted">Runway</p>
+          <p className="text-[11px] text-muted">Money lasts</p>
           <p className="tabular font-bold">{runwayLabel(f.runwayDays)} days</p>
           <p className={`text-[11px] font-semibold ${runwayDiff < 0 ? "text-bad" : runwayDiff > 0 ? "text-good" : "text-muted"}`}>
             {runwayDiff === 0 ? "no change" : `was ${runwayLabel(base.runwayDays)}`}
@@ -258,7 +258,7 @@ function AnswerCard({ a }: { a: Answer }) {
       )}
 
       <p className="mt-2 text-[10px] text-muted">
-        {a.source === "ai" ? "AI understood your question." : "Understood by Runway's built-in reader."} All numbers come from Runway&apos;s forecast, not AI.
+        {a.source === "ai" ? "AI understood your question." : "Understood by Kit's built-in reader."} All numbers come from Kit&apos;s forecast, not AI.
       </p>
     </div>
   );

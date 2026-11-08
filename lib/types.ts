@@ -42,6 +42,32 @@ export interface Snapshot {
   loans: Loan[];
   source: "nessie" | "mock";
   note?: string;
+  external?: Holding[]; // accounts at other institutions (CDs, IRAs, student loans…)
+  ious?: Iou[]; // money between this user and friends (peer-to-peer)
+}
+
+/** An account Kit knows about that isn't in Nessie (e.g. a CD at a credit union). */
+export interface Holding {
+  id: string;
+  kind: "asset" | "debt";
+  type: string; // "CD", "Roth IRA", "Student loan", "Mortgage"…
+  name: string;
+  institution: string;
+  balance: number;
+  rate?: number; // APY for assets, APR for debts (e.g. 0.041)
+  maturesOn?: string; // YYYY-MM-DD, for CDs
+  monthlyPayment?: number;
+  note?: string;
+}
+
+/** Money owed between two Kit users, settled with Nessie peer-to-peer transfers. */
+export interface Iou {
+  id: string;
+  friendId: string;
+  friendName: string;
+  direction: "owesYou" | "youOwe";
+  amount: number;
+  note: string;
 }
 
 // Adjustments the forecast can apply (fixes, purchases, stress tests)

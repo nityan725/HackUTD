@@ -1,7 +1,7 @@
 import type { Snapshot } from "./types";
 
 // An exact copy of "Priya Sharma" as seeded in your Nessie account (Nov 7, 2026).
-// Runway uses this automatically if Nessie can't be reached, so the demo never breaks.
+// Kit uses this automatically if Nessie can't be reached, so the demo never breaks.
 const CHK = "e2a36f0b-eadc-4f09-935c-4a8d5e4867ba";
 const SAV = "95583174-618a-43e3-950c-6e0bd42e0c73";
 const CARD = "cdc6bfa8-8939-4580-84f5-a76f6a3dcf79";

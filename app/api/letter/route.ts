@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { templateLetter, type LetterFacts } from "@/lib/letter";
 
 
-const PROMPT = (facts: LetterFacts) => `You are writing a short, warm monthly money letter for a personal finance app called Runway.
+const PROMPT = (facts: LetterFacts) => `You are writing a short, warm monthly money letter for a personal finance app called Kit.
 Write it as a letter from "future you" to ${facts.name}.
 
 RULES:
