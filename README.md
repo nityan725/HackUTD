@@ -37,16 +37,6 @@ Kit installs on a phone like a native app (PWA).
 Next.js (App Router) · React · TypeScript · Tailwind CSS · Recharts · Capital One Nessie API · Vercel · PWA
 
 
-<<<<<<< HEAD
-You need [Node.js](https://nodejs.org) (LTS).
-
-```bash
-npm install
-cp .env.example .env.local     # Windows: copy .env.example .env.local
-```
-
-Fill in `.env.local`:
-
 | Variable | What it is |
 |---|---|
 | `NESSIE_API_KEY` | Your Nessie API key |
@@ -63,22 +53,6 @@ npm run dev
 
 Open http://localhost:3000.
 
-### Demo accounts
-
-| Name | Email | Password | Story |
-|---|---|---|---|
-| Carrie | carrie@kit.app | demo123 | Part-time job, $184 short before payday, Marcus owes her $60 |
-| Marcus | marcus@kit.app | demo123 | Full-time, healthy savings |
-
-**Reset demo** (on the Fix screen after approving a fix) brings back the cash crunch and Marcus's $60, so the demo can be replayed.
-
-## Nessie notes
-
-- Nessie doesn't update stored balances when transactions are added, so Kit calculates current balances itself.
-- Nessie transfers don't record a destination, so a money move is a withdrawal plus a matching deposit.
-- Nessie has no credit limits, CDs or retirement accounts; card limits live in `lib/config.ts` and outside accounts are marked "linked elsewhere."
-- Demo login only: passwords live in code. A production version would use a real auth provider and a secure bank connection (e.g. Plaid).
-
 ## Project structure
 
 ```
@@ -91,6 +65,3 @@ components/     charts, icons, header, navigation
 
 ---
 
-Built solo at HackUTD 2026 by Nityasri Nadimpalli. Claude was used as a coding assistant.
-=======
->>>>>>> ba70bedbe469511fdb579d330ecfef71f8076ee6
