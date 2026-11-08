@@ -37,7 +37,10 @@ export function buildFixes(snap: Snapshot, base: Forecast, plan: Changes = {}): 
       const f = run(changes);
       fixes.push({
         id: "move",
-        title: `Move ${usd(amount)} from savings`,
+        // If a friend already paid you back, this covers "the rest"
+        title: iouStatus(snap).some((i) => i.direction === "owesYou" && i.paid > 0)
+          ? `Move the rest: ${usd(amount)} from savings`
+          : `Move ${usd(amount)} from savings`,
         detail: `Savings goes from ${usd(sav.balance)} to ${usd(sav.balance - amount)}. Happens instantly.`,
         cost: 0,
         costLabel: "$0",
@@ -57,7 +60,7 @@ export function buildFixes(snap: Snapshot, base: Forecast, plan: Changes = {}): 
     fixes.push({
       id: `request-${iou.id}`,
       title: `Ask ${iou.friendName} to pay back ${usd(iou.outstanding)}`,
-      detail: `For ${iou.note.toLowerCase()}. Sent peer-to-peer through Capital One Nessie.`,
+      detail: `For ${iou.note.toLowerCase()}. Collect what you're owed first, then cover the rest. Sent peer-to-peer through Nessie.`,
       cost: 0,
       costLabel: "$0",
       changes,
@@ -129,7 +132,9 @@ export function buildFixes(snap: Snapshot, base: Forecast, plan: Changes = {}): 
 
   // Fixes that solve the problem first, then cheapest
   const body = fixes.filter((f) => f.id !== "nothing");
-  body.sort((a, b) => Number(b.resolves) - Number(a.resolves) || a.cost - b.cost);
+  // Collecting money a friend owes you comes first; then fixes that solve the problem, cheapest first
+  const isRequest = (f: Fix) => (f.action?.type === "request" ? 1 : 0);
+  body.sort((a, b) => isRequest(b) - isRequest(a) || Number(b.resolves) - Number(a.resolves) || a.cost - b.cost);
   return [...body, fixes[fixes.length - 1]];
 }
 

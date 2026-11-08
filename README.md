@@ -1,98 +1,116 @@
-# Runway ✈️
+<p align="center">
+  <img src="public/icon-512.png" alt="Kit logo" width="120" />
+</p>
 
-**See a cash crunch before it happens, and fix it in one tap.**
-Built on Capital One's Nessie API · HackUTD (Capital One + PNC tracks)
-
----
-
-## 1. Run it on your laptop (about 10 minutes)
-
-You need: **Node.js (LTS)** from nodejs.org and **VS Code**.
-
-1. Unzip this folder somewhere easy (e.g. `Documents/runway`).
-2. In VS Code: **File → Open Folder… →** pick the `runway` folder.
-3. Open the terminal: **Terminal → New Terminal**.
-4. Install everything (only needed once):
-   ```
-   npm install
-   ```
-5. Make your settings file:
-   - Mac/Linux: `cp .env.example .env.local`
-   - Windows: `copy .env.example .env.local`
-6. Open `.env.local` and paste your Nessie key after `NESSIE_API_KEY=`.
-   Priya's customer ID is already filled in.
-7. Start the app:
-   ```
-   npm run dev
-   ```
-8. Open **http://localhost:3000** in Chrome. Press **Ctrl+Shift+M** (Mac: **Cmd+Shift+M**) and choose an iPhone to see it phone-sized.
-
-> No key yet, or the wifi died? Set `NESSIE_MOCK=1` in `.env.local`. Runway switches to a built-in copy of Priya's data and everything still works.
+<h1 align="center">Kit</h1>
+<p align="center"><b>Hears money trouble coming, and helps you fix it in one tap.</b><br/>
+Built on the Capital One Nessie API · HackUTD 2026 · PNC + Capital One tracks</p>
 
 ---
 
-## 2. Put it online + install it like an app (about 10 minutes)
+## The problem
 
-1. Install **GitHub Desktop** → **File → Add Local Repository** → pick the `runway` folder → **Publish repository** (keep "private" checked). Your `.env.local` (with your key) is never uploaded.
-2. Go to **vercel.com** → sign in with GitHub → **Add New → Project** → import `runway`.
-3. Under **Environment Variables**, add each line from your `.env.local` (name + value).
-4. Click **Deploy**. You get a link like `runway-xyz.vercel.app`.
-5. On your phone, open that link:
-   - **iPhone (Safari):** Share button → **Add to Home Screen**
-   - **Android (Chrome):** ⋮ menu → **Install app**
+Most people don't run into money trouble because they spend too much. They run into it because of **timing**: rent, a car payment and a credit card bill land a few days before payday, and suddenly there's a $35 overdraft fee. Budgeting apps show what already happened. By then it's too late.
 
-   It opens full screen with its own icon, no browser bar.
+## What Kit does
 
-Every time you click **Push origin** in GitHub Desktop, Vercel redeploys automatically.
+Kit pulls every account into one view, forecasts your balance **day by day for the next 45 days**, and helps you act before a cash crunch hits.
 
----
-
-## 3. The demo (about 3 minutes)
-
-1. **Home.** "Runway is watching 3 accounts + 1 loan." Safe to spend: **$0**. The red card says **"You'll be $184 short on Fri, Nov 20"** because rent, the car loan and the card payment all land before payday.
-2. Scroll down. Point out the **4 health scores** (PNC) and **Everything Runway sees** (all accounts, from Nessie).
-3. Tap **See fixes**. Show the **two futures**: red dashed "do nothing" vs. green "with the fix." Each fix has a price tag: $0, ~$10, or a $35 fee.
-4. Tap **Approve: move $440**. Runway writes a withdrawal and deposit to **Nessie**, and the chart redraws: **"You're in the clear."**
-5. **Buy?** tab: tap **Dinner out · $60** → "Go for it, = 3.3 hours of work." Then **New laptop · $600** → "Wait," with the date it becomes safe.
-6. **What if** tab: tap **$800 car repair** → runway drops to 11 days, and Runway shows plan B.
-7. **Letter** tab: **Open my letter.** A note from "future you." Point out the lock line: *every number is calculated in code; AI only writes the words.*
-
-**To run the demo again:** on the Fix tab (after approving), tap **Reset demo**.
-
----
-
-## 4. How it's built (for your slides)
-
-| Piece | File |
+| Feature | What it does |
 |---|---|
-| Reads all accounts, bills, loans, deposits and purchases from Nessie | `lib/nessie.ts`, `app/api/snapshot/route.ts` |
-| Approve button: writes the money move back to Nessie | `app/api/move/route.ts` |
-| **Forecast engine**: day-by-day balance for 45 days | `lib/forecast.ts` |
-| 4 health scores (cushion, debt load, credit use, 30-day coverage) | `lib/health.ts` |
-| Fixes with price tags | `lib/fixes.ts` |
-| Buy-it-now check + hours of work | `lib/buy.ts` |
-| Stress tests | `lib/stress.ts` |
-| Monthly letter (facts in code, words by AI) | `lib/letter.ts`, `app/api/letter/route.ts` |
-| Settings Nessie doesn't store (wage, card limit, APR…) | `lib/config.ts` |
-| Screens | `app/page.tsx`, `app/fix`, `app/buy`, `app/whatif`, `app/letter` |
-| Installable app (PWA) | `app/manifest.ts`, `public/icon-*.png` |
+| **Safe to spend** | One number on the home screen: what you can spend until payday, and how many days your money lasts. |
+| **Cash-crunch alerts** | "You'll be $184 short on Nov 20," with the exact bills that cause it. |
+| **One-tap fixes** | Ranked options with price tags: collect what a friend owes you, move the rest from savings, pay the card minimum, pause subscriptions, or do nothing ($35 fee). A chart shows "if I do nothing" next to "if I tap the fix." Approving writes real transactions to Nessie. |
+| **Can I afford it?** | Type a price and get **Go / Go-but / Wait**, the best way to pay, and what it costs in **hours of work**. |
+| **What-if chat** | Ask "What if rent goes up $200 and I cancel Spotify?" and see your new forecast plus a plan B. |
+| **4 health scores** | Cash cushion, debt load, credit use and 30-day coverage, each green / yellow / red. |
+| **Net worth** | Everything you own and owe: checking, savings, a CD, an IRA, a card, a car loan and a student loan. |
+| **Your next moves** | Specific, ranked steps like "Your $1,000 CD unlocks Dec 3." |
+| **Pay & request** | Settle up with friends through Nessie peer-to-peer transfers. |
+| **Monthly letter** | A note from "future you": one win, one risk, three steps with dollar values. |
 
-**Responsible AI:** the AI never sees raw bank data and never decides anything. Code computes every number; the AI only rewrites them as a friendly letter, and is told not to invent numbers. No money moves without the user tapping Approve.
+Kit installs on a phone like a native app (PWA).
+
+## How it fits the tracks
+
+**PNC: see the whole financial picture and feel confident about the next move.**
+Whole-picture net worth view, 4 health indicators, balance and bill forecasting, a what-if simulator, a conversational chat, and ranked next moves.
+
+**Capital One: reimagine banking with the Nessie API.**
+Kit reads customers, accounts, deposits, purchases, withdrawals, bills, loans and merchants, **writes money moves back** when a fix is approved, and uses **peer-to-peer transfers** between customers.
+
+## How it works
+
+```
+Nessie API ──► /api/snapshot ──► Forecast engine ──► Home · Fix · Buy · What-if · Letter
+                (server only)     (lib/forecast.ts)
+                                        ▲
+              Approve / Pay ──► /api/move, /api/p2p ──► Nessie (withdrawal + deposit)
+```
+
+- **One forecast engine powers everything.** It detects paydays from past deposits, places each bill and loan on its due date, and subtracts average daily spending. Fixes, the purchase check and what-ifs all re-run it with small changes, so every number agrees.
+- **AI explains, code calculates.** The AI only (1) turns a what-if question into strict JSON that Kit validates, and (2) writes the monthly letter from facts the code already computed. Nothing moves without the user tapping Approve. With no AI key, Kit uses a built-in question reader and a letter template.
+- **API keys stay on the server.** All Nessie and AI calls run in Next.js server routes.
+
+## Tech stack
+
+Next.js (App Router) · React · TypeScript · Tailwind CSS · Recharts · Capital One Nessie API · Vercel · PWA
+Optional AI: Gemini, OpenAI or Claude
+
+## Run it locally
+
+You need [Node.js](https://nodejs.org) (LTS).
+
+```bash
+npm install
+cp .env.example .env.local     # Windows: copy .env.example .env.local
+```
+
+Fill in `.env.local`:
+
+| Variable | What it is |
+|---|---|
+| `NESSIE_API_KEY` | Your Nessie API key |
+| `NESSIE_BASE_URL` | `https://prod-api.nessieisreal.com` |
+| `NESSIE_CUSTOMER_ID` | The Nessie customer behind the "Carrie" demo account |
+| `NESSIE_MOCK` | `1` = use built-in demo data instead of Nessie |
+| `NEXT_PUBLIC_DEMO_TODAY` | Pins "today" to the date the demo data was created (`2026-11-07`) |
+| `NEXT_PUBLIC_BALANCE_AS_OF` | Date Nessie's stored balances are treated as accurate (`2026-11-07`) |
+| `SESSION_SECRET` | Any long random phrase (signs the login cookie) |
+| `GEMINI_API_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` | Optional, one AI key |
+
+```bash
+npm run dev
+```
+
+Open http://localhost:3000.
+
+### Demo accounts
+
+| Name | Email | Password | Story |
+|---|---|---|---|
+| Carrie | carrie@kit.app | demo123 | Part-time job, $184 short before payday, Marcus owes her $60 |
+| Marcus | marcus@kit.app | demo123 | Full-time, healthy savings |
+
+**Reset demo** (on the Fix screen after approving a fix) brings back the cash crunch and Marcus's $60, so the demo can be replayed.
+
+## Nessie notes
+
+- Nessie doesn't update stored balances when transactions are added, so Kit calculates current balances itself.
+- Nessie transfers don't record a destination, so a money move is a withdrawal plus a matching deposit.
+- Nessie has no credit limits, CDs or retirement accounts; card limits live in `lib/config.ts` and outside accounts are marked "linked elsewhere."
+- Demo login only: passwords live in code. A production version would use a real auth provider and a secure bank connection (e.g. Plaid).
+
+## Project structure
+
+```
+app/            screens (Home, fix, buy, whatif, letter, worth, pay, profile, login)
+app/api/        server routes: snapshot, move, p2p, whatif, letter, login, logout
+lib/forecast.ts the forecast engine
+lib/            health scores, fixes, buy check, what-if parser, net worth, Nessie client
+components/     charts, icons, header, navigation
+```
 
 ---
 
-## 5. Things to know
-
-- **Demo date.** Priya's data was created on Nov 7, 2026, so `.env.local` pins "today" to that date (`NEXT_PUBLIC_DEMO_TODAY`). That makes her crunch show up every time. Delete the line to use the real date.
-- **Nessie quirks (found by testing):** account balances never update by themselves, so Runway computes them. Transfers don't record a destination, so a "move" is a withdrawal plus a deposit. There's no credit-limit field, so the card limit is in `lib/config.ts`.
-- **AI letter.** Add ONE of `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` or `GEMINI_API_KEY` to `.env.local`. With no key it uses a built-in template, so the feature still works.
-- **Changing the persona.** Edit `lib/config.ts` (hourly wage, card limit, due days). To use a different Nessie customer, change `NESSIE_CUSTOMER_ID`.
-
-## 6. If something breaks
-
-| Problem | Fix |
-|---|---|
-| `npm` not found | Install Node.js LTS, then close and reopen VS Code |
-| Yellow "demo data" banner | Key or customer ID missing or wrong in `.env.local`. Restart `npm run dev` after editing. |
-| Works locally, not on Vercel | Add the environment variables in Vercel → Project → Settings → Environment Variables, then redeploy |
-| Changes don't show up | Stop the server (Ctrl+C) and run `npm run dev` again |
+Built solo at HackUTD 2026 by Nityasri Nadimpalli. Claude was used as a coding assistant.

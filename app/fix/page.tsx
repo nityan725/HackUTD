@@ -22,6 +22,7 @@ export default function FixPage() {
   const [selected, setSelected] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [msgOk, setMsgOk] = useState(true);
 
   if (loading) return <Loading />;
   if (error || !base) return <ErrorBox msg={error ?? "No data"} />;
@@ -34,14 +35,16 @@ export default function FixPage() {
     setMsg(null);
     try {
       await approve(f);
+      setMsgOk(true);
       setMsg(
         f.action?.type === "move"
           ? `Done. ${money(f.action.amount)} moved from savings to checking in Nessie.`
           : f.action?.type === "request"
-            ? `Done. ${f.action.friendName} paid you back ${money(f.action.amount)} through Nessie.`
+            ? `${f.action.friendName} paid you back ${money(f.action.amount)} through Nessie. Now cover the rest with the next fix.`
             : `Done. "${f.title}" is now part of your plan.`,
       );
     } catch (e) {
+      setMsgOk(false);
       setMsg(`That didn't work: ${String(e)}`);
     } finally {
       setBusy(false);
@@ -98,6 +101,10 @@ export default function FixPage() {
         }
       />
 
+      {msg && (
+        <p className={`rise mb-4 rounded-2xl px-4 py-3 text-sm font-medium ${msgOk ? "bg-good-soft text-good" : "bg-bad-soft text-bad"}`}>{msg}</p>
+      )}
+
       {/* Two timelines */}
       <Card>
         <div className="mb-1 flex items-center justify-between">
@@ -149,7 +156,7 @@ export default function FixPage() {
         })}
       </div>
 
-      {msg && <p className="mt-4 rounded-2xl bg-bad-soft px-4 py-3 text-sm text-bad">{msg}</p>}
+      
 
       {fix && fix.id !== "nothing" && (
         <div className="sticky bottom-[84px] -mx-5 mt-5 bg-gradient-to-t from-canvas via-canvas to-canvas/0 px-5 pb-2 pt-6 sm:bottom-0">
