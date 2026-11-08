@@ -4,7 +4,7 @@
 
 <h1 align="center">Kit</h1>
 <p align="center"><b>Hears money trouble coming, and helps you fix it in one tap.</b><br/>
-Built on the Capital One Nessie API · HackUTD 2026 · PNC + Capital One tracks</p>
+Built on the Capital One Nessie API · HackUTD 2026 · </p>
 
 ---
 
@@ -31,33 +31,13 @@ Kit pulls every account into one view, forecasts your balance **day by day for t
 
 Kit installs on a phone like a native app (PWA).
 
-## How it fits the tracks
-
-**PNC: see the whole financial picture and feel confident about the next move.**
-Whole-picture net worth view, 4 health indicators, balance and bill forecasting, a what-if simulator, a conversational chat, and ranked next moves.
-
-**Capital One: reimagine banking with the Nessie API.**
-Kit reads customers, accounts, deposits, purchases, withdrawals, bills, loans and merchants, **writes money moves back** when a fix is approved, and uses **peer-to-peer transfers** between customers.
-
-## How it works
-
-```
-Nessie API ──► /api/snapshot ──► Forecast engine ──► Home · Fix · Buy · What-if · Letter
-                (server only)     (lib/forecast.ts)
-                                        ▲
-              Approve / Pay ──► /api/move, /api/p2p ──► Nessie (withdrawal + deposit)
-```
-
-- **One forecast engine powers everything.** It detects paydays from past deposits, places each bill and loan on its due date, and subtracts average daily spending. Fixes, the purchase check and what-ifs all re-run it with small changes, so every number agrees.
-- **AI explains, code calculates.** The AI only (1) turns a what-if question into strict JSON that Kit validates, and (2) writes the monthly letter from facts the code already computed. Nothing moves without the user tapping Approve. With no AI key, Kit uses a built-in question reader and a letter template.
-- **API keys stay on the server.** All Nessie and AI calls run in Next.js server routes.
 
 ## Tech stack
 
 Next.js (App Router) · React · TypeScript · Tailwind CSS · Recharts · Capital One Nessie API · Vercel · PWA
 
-## Run it locally
 
+<<<<<<< HEAD
 You need [Node.js](https://nodejs.org) (LTS).
 
 ```bash
@@ -112,3 +92,5 @@ components/     charts, icons, header, navigation
 ---
 
 Built solo at HackUTD 2026 by Nityasri Nadimpalli. Claude was used as a coding assistant.
+=======
+>>>>>>> ba70bedbe469511fdb579d330ecfef71f8076ee6
